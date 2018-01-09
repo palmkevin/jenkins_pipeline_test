@@ -85,10 +85,10 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --juni
           steps {
             sh '''#exit 0
 
-#. /etc/profile
-#. ~/.profile
-#. initLXEnv.sh BUILD_PERMANENT
-#export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
 
 export JUNIT_NAME=itf.highlevel
 
