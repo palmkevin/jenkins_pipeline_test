@@ -33,13 +33,14 @@ pipeline {
         }
         stage('UT') {
           steps {
-            sh '''. /etc/profile
+            sh '''exit 0
+
+. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
-X=$PYTHONPATH
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
 
 # 0. lxs
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$X
 echo -e "[junit-xml]\\npath = lxs-junit.xml" > junit.cfg
 python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper lxs.tests 
 
@@ -59,15 +60,42 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
 echo -e "[junit-xml]\\npath = ls.tools.importer-junit.xml" > junit.cfg
 python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.tools.importer.tests
 '''
-            junit '*-junit.xml'
           }
         }
       }
     }
-    stage('say goodby') {
+    stage('run unit tests') {
+      parallel {
+        stage('LXS UT') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+echo -e "[junit-xml]\\npath = lxs-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper lxs.tests 
+'''
+          }
+        }
+        stage('ITF UT') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+# 3. itf.highlevel
+echo -e "[junit-xml]\\npath = itf.highlevel-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper itf.highlevel.tests 
+'''
+          }
+        }
+      }
+    }
+    stage('Archive test results') {
       steps {
-        sh '''echo $HOSTNAME
-echo good bye'''
+        junit '*-junit.xml'
       }
     }
   }
