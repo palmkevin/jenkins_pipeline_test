@@ -28,7 +28,7 @@ pipeline {
             sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh kpa
-web_ui_build.sh'''
+# web_ui_build.sh'''
           }
         }
         stage('UT') {
