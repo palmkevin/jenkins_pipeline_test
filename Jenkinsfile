@@ -49,7 +49,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
 
 # 2. ls.smb.transform
 #echo -e "[junit-xml]\\npath = ls.smb.transform-junit.xml" > junit.cfg
-#python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.smb.tests.transform.cases 
+#python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml ls.smb.tests.transform.cases 
 
 # 3. itf.highlevel
 echo -e "[junit-xml]\\npath = itf.highlevel-junit.xml" > junit.cfg
