@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'lsdev01'
+    }
+    
+  }
   stages {
     stage('TEST') {
       parallel {
