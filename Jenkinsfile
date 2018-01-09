@@ -1,12 +1,7 @@
 pipeline {
-  agent {
-    docker {
-      image 'python:3.6.2'
-    }
-    
-  }
+  agent any
   stages {
-    stage('say hello') {
+    stage('TEST') {
       parallel {
         stage('say hello') {
           steps {
