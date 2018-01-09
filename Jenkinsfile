@@ -68,8 +68,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
       parallel {
         stage('LXS') {
           steps {
-            sh '''
-. /etc/profile
+            sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
@@ -83,9 +82,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --juni
         }
         stage('ITF') {
           steps {
-            sh '''#exit 0
-
-. /etc/profile
+            sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
@@ -99,9 +96,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --juni
         }
         stage('ls.smb.transform') {
           steps {
-            sh '''exit 0
-
-. /etc/profile
+            sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
@@ -115,9 +110,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --juni
         }
         stage('ls.smb.pricing.ac') {
           steps {
-            sh '''exit 0
-
-. /etc/profile
+            sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
@@ -131,9 +124,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --juni
         }
         stage('ls.tools.importer') {
           steps {
-            sh '''exit 0
-
-. /etc/profile
+            sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
