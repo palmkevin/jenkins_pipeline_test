@@ -23,6 +23,12 @@ pipeline {
             sh 'set'
           }
         }
+        stage('kpa web build') {
+          steps {
+            sh '''. initLXEnv.sh kpa
+web_ui_build.sh'''
+          }
+        }
       }
     }
     stage('say goodby') {
