@@ -25,7 +25,9 @@ pipeline {
         }
         stage('kpa web build') {
           steps {
-            sh '''. initLXEnv.sh kpa
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh kpa
 web_ui_build.sh'''
           }
         }
