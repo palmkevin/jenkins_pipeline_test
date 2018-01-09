@@ -13,6 +13,11 @@ pipeline {
             sh 'python --version'
           }
         }
+        stage('show variables') {
+          steps {
+            sh 'set'
+          }
+        }
       }
     }
     stage('say goodby') {
