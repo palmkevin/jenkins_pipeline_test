@@ -36,13 +36,15 @@ pipeline {
             sh '''. /etc/profile
 . ~/.profile
 . initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+X=$PYTHONPATH
 
-
-export PYTHONPATH=$LSHOME/python32/ls/tests:$PYTHONPATH
-python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper itf.highlevel.tests --with-xunit --xunit-file=$WORKSPACE/ITF-junit.xml
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$X
+echo -e "[junit-xml]\\npath = lxs-junit.xml" > junit.cfg
 python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper lxs.tests --with-xunit --xunit-file=$WORKSPACE/LXS-junit.xml
-#exit 0'''
+
+echo -e "[junit-xml]\\npath = itf-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper itf.highlevel.tests --with-xunit --xunit-file=$WORKSPACE/ITF-junit.xml
+'''
             junit '*-junit.xml'
           }
         }
