@@ -41,7 +41,7 @@ export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
 
 export PYTHONPATH=$LSHOME/python32/ls/tests:$PYTHONPATH
 python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper itf.highlevel.tests
-python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper lxs.tests
+#python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper lxs.tests
 #exit 0'''
             junit 'nose2-junit.xml'
           }
