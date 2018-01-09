@@ -66,7 +66,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
     }
     stage('run unit tests') {
       parallel {
-        stage('LXS UT') {
+        stage('LXS') {
           steps {
             sh '''. /etc/profile
 . ~/.profile
@@ -78,7 +78,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
 '''
           }
         }
-        stage('ITF UT') {
+        stage('ITF') {
           steps {
             sh '''. /etc/profile
 . ~/.profile
@@ -88,6 +88,45 @@ export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
 # 3. itf.highlevel
 echo -e "[junit-xml]\\npath = itf.highlevel-junit.xml" > junit.cfg
 python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper itf.highlevel.tests 
+'''
+          }
+        }
+        stage('ls.smb.transform') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+# 2. ls.smb.transform
+echo -e "[junit-xml]\\npath = ls.smb.transform-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml ls.smb.tests.transform.cases 
+'''
+          }
+        }
+        stage('ls.smb.pricing.ac') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+# 1. ls.smb.pricing.ac
+echo -e "[junit-xml]\\npath = ls.smb.pricing.ac-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.smb.tests.pricing.ac 
+'''
+          }
+        }
+        stage('ls.tools.importer') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+# 4. ls.tools.importer
+echo -e "[junit-xml]\\npath = ls.tools.importer-junit.xml" > junit.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.tools.importer.tests
 '''
           }
         }
