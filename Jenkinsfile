@@ -40,10 +40,10 @@ X=$PYTHONPATH
 
 export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$X
 echo -e "[junit-xml]\\npath = lxs-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper lxs.tests --with-xunit --xunit-file=$WORKSPACE/LXS-junit.xml
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper lxs.tests 
 
 echo -e "[junit-xml]\\npath = itf-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --junit-xml nose2helper itf.highlevel.tests --with-xunit --xunit-file=$WORKSPACE/ITF-junit.xml
+python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper itf.highlevel.tests 
 '''
             junit '*-junit.xml'
           }
