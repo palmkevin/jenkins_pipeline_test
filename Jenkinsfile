@@ -39,16 +39,39 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
 '''
           }
         }
-        stage('') {
+        stage('error') {
           steps {
             sh 'exit 1'
           }
         }
+        stage('LXS UT') {
+          steps {
+            sh '''. /etc/profile
+. ~/.profile
+. initLXEnv.sh BUILD_PERMANENT
+export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
+
+export JUNIT_NAME=lxs
+
+echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
+python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper lxs.tests 
+'''
+          }
+        }
       }
     }
-    stage('') {
-      steps {
-        echo 'end'
+    stage('error') {
+      parallel {
+        stage('error') {
+          steps {
+            echo 'end'
+          }
+        }
+        stage('collect ut') {
+          steps {
+            junit '*junit.xml'
+          }
+        }
       }
     }
   }
