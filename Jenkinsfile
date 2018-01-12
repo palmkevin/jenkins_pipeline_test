@@ -8,8 +8,7 @@ pipeline {
   stages {
     stage('activate LS npm repository') {
       steps {
-        sh '''nrm use labsolution
-if [ "$?" -ne 0 ]; then exit "$?"; fi'''
+        sh 'nrm use labsolutionx'
       }
     }
     stage('npm install') {
