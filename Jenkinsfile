@@ -56,7 +56,6 @@ export JUNIT_NAME=lxs
 echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
 python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper lxs.tests 
 '''
-            sh 'return 1'
           }
         }
       }
