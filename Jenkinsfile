@@ -20,14 +20,20 @@ if [ "$?" -ne 0 ]; then exit "$?"; fi
       }
     }
     stage('ng build (prod)') {
-      steps {
-        dir(path: '$LSHOME/web') {
-          sh '''cd $LSHOME/web
+      parallel {
+        stage('ng build (prod)') {
+          steps {
+            sh '''cd $LSHOME/web
 exec ng build --op $LSHOME/local/web_build --no-progress --prod
 if [ "$?" -ne 0 ]; then exit "$?"; fi
 '''
+          }
         }
-        
+        stage('') {
+          steps {
+            error 'uh oh'
+          }
+        }
       }
     }
   }
