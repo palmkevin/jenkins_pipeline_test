@@ -12,8 +12,17 @@ pipeline {
       }
     }
     stage('npm install') {
-      steps {
-        sh 'npm install'
+      parallel {
+        stage('npm install') {
+          steps {
+            sh 'npm install'
+          }
+        }
+        stage('') {
+          steps {
+            input(message: '1, 2 oder 3_', id: '123', ok: 'zes')
+          }
+        }
       }
     }
     stage('ng build (prod)') {
