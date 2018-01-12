@@ -8,23 +8,18 @@ pipeline {
   stages {
     stage('activate LS npm repository') {
       steps {
-        sh '''nrm use labsolutionx
-if [ "$?" -ne 0 ]; then exit "$?"; fi'''
+        sh 'exec nrm use labsolutionx'
       }
     }
     stage('npm install') {
       steps {
-        sh '''npm install
-if [ "$?" -ne 0 ]; then exit "$?"; fi
-'''
+        sh 'npm install'
       }
     }
     stage('ng build (prod)') {
       steps {
-        sh '''#cd $LSHOME/web
-exec ng build --op $LSHOME/local/web_build --no-progress --prod
-#if [ "$?" -ne 0 ]; then exit "$?"; fi
-'''
+        sh '''cd $LSHOME/web
+exec ng build --op $LSHOME/local/web_build --no-progress --prod'''
       }
     }
   }
