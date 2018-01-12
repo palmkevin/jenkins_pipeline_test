@@ -6,31 +6,8 @@ pipeline {
     
   }
   stages {
-    stage('TEST') {
+    stage('UT') {
       parallel {
-        stage('say hello') {
-          steps {
-            echo 'Hello from docker'
-          }
-        }
-        stage('get version') {
-          steps {
-            sh 'python --version'
-          }
-        }
-        stage('show variables') {
-          steps {
-            sh 'set'
-          }
-        }
-        stage('kpa web build') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh kpa
-# web_ui_build.sh'''
-          }
-        }
         stage('UT') {
           steps {
             sh '''exit 0
@@ -62,85 +39,16 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
 '''
           }
         }
-      }
-    }
-    stage('run unit tests') {
-      parallel {
-        stage('LXS') {
+        stage('') {
           steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=lxs
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper lxs.tests 
-'''
-          }
-        }
-        stage('ITF') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=itf.highlevel
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper itf.highlevel.tests 
-'''
-          }
-        }
-        stage('ls.smb.transform') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=ls.smb.transform
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml ls.smb.tests.transform.cases 
-'''
-          }
-        }
-        stage('ls.smb.pricing.ac') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=ls.smb.pricing.ac
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper ls.smb.tests.pricing.ac 
-'''
-          }
-        }
-        stage('ls.tools.importer') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=ls.tools.importer
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper ls.tools.importer.tests
-'''
+            sh 'exit 1'
           }
         }
       }
     }
-    stage('Archive test results') {
+    stage('') {
       steps {
-        junit '*-junit.xml'
+        echo 'end'
       }
     }
   }
