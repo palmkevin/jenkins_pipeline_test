@@ -8,69 +8,44 @@ pipeline {
   stages {
     stage('UT') {
       parallel {
-        stage('UT') {
+        stage('Update other') {
           steps {
-            sh '''exit 0
-
-. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-# 0. lxs
-echo -e "[junit-xml]\\npath = lxs-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper lxs.tests 
-
-# 1. ls.smb.pricing.ac
-echo -e "[junit-xml]\\npath = ls.smb.pricing.ac-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.smb.tests.pricing.ac 
-
-# 2. ls.smb.transform
-echo -e "[junit-xml]\\npath = ls.smb.transform-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml ls.smb.tests.transform.cases 
-
-# 3. itf.highlevel
-echo -e "[junit-xml]\\npath = itf.highlevel-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper itf.highlevel.tests 
-
-# 4. ls.tools.importer
-echo -e "[junit-xml]\\npath = ls.tools.importer-junit.xml" > junit.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml nose2helper ls.tools.importer.tests
+            sh '''# ---------- Update other
+/opt/ls/lx/local/ux_bin/ls_deploy.sh updateOther "kpa"
+if [ "$?" -ne 0 ]; then exit 1; fi
 '''
           }
         }
-        stage('error') {
+        stage('update Uniface') {
           steps {
-            sh 'exit 1'
-          }
-        }
-        stage('LXS UT') {
-          steps {
-            sh '''. /etc/profile
-. ~/.profile
-. initLXEnv.sh BUILD_PERMANENT
-export PYTHONPATH=$LSHOME:$LSHOME/python32/ls/tests:$PYTHONPATH
-
-export JUNIT_NAME=lxs
-
-echo -e "[junit-xml]\\npath = $JUNIT_NAME-junit.xml" > $JUNIT_NAME.cfg
-python3 -m nose2 --plugin nose2.plugins.junitxml --config $JUNIT_NAME.cfg --junit-xml nose2helper lxs.tests 
+            sh '''/opt/ls/lx/local/ux_bin/ls_deploy.sh updateUniface "kpa"
+if [ "$?" -ne 0 ]; then exit 1; fi
 '''
-            junit '*junit.xml'
           }
         }
       }
     }
-    stage('error') {
+    stage('compile uniface') {
       parallel {
-        stage('error') {
+        stage('compile uniface') {
           steps {
             echo 'end'
+            sh '''# ---------- Compile uniface (nodelete)
+/opt/ls/lx/local/ux_bin/ls_deploy.sh unifaceCompile dev "kpa" --noDelete 1
+if [ "$?" -ne 0 ]; then exit 1; fi
+'''
           }
         }
-        stage('collect ut') {
+        stage('web build') {
           steps {
-            junit '*junit.xml'
+            sh '''# ---------- Web build
+. /etc/profile
+. ~/.profile
+. initLXEnv.sh kpa
+
+web_ui_build.sh
+if [ "$?" -ne 0 ]; then exit 1; fi
+'''
           }
         }
       }
