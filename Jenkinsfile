@@ -27,4 +27,7 @@ if [ "$?" -ne 0 ]; then exit "$?"; fi
       }
     }
   }
+  environment {
+    LSHOME = '/opt/ls/lx/release/kpa'
+  }
 }
