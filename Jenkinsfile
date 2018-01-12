@@ -41,7 +41,7 @@ python3 -m nose2 --plugin nose2.plugins.junitxml --config junit.cfg --junit-xml 
         }
         stage('error') {
           steps {
-            sh 'exit 0'
+            sh 'exit 1'
           }
         }
         stage('LXS UT') {
