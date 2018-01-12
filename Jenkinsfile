@@ -22,7 +22,8 @@ if [ "$?" -ne 0 ]; then exit "$?"; fi
     stage('ng build (prod)') {
       steps {
         dir(path: '$LSHOME/web') {
-          sh '''exec ng build --op $LSHOME/local/web_build --no-progress --prod
+          sh '''cd $LSHOME/web
+exec ng build --op $LSHOME/local/web_build --no-progress --prod
 if [ "$?" -ne 0 ]; then exit "$?"; fi
 '''
         }
